@@ -13,14 +13,18 @@ app.init = function(){
 
 
   app.messages = [];
-  app.roomNameLists = ['Lobby' , '4Chan', 'All'];
+  app.roomNameLists = ['Lobby' , '4Chan'];
   app.currentRoomname = 'All';
   app.currentUsername = window.location.search.split('=')[1];
 
 };
 
 app.updateRoomSelectionList = function() {
-
+  app.$roomNameSelections.html('');
+  app.roomNameLists.forEach(function(roomname){
+    app.$roomNameSelections.append('<li><a>' + roomname + '</a></li>');
+  });
+  app.$roomNameSelections.append('<li><a>All</a></li>');
 }
 
 
@@ -77,7 +81,7 @@ app.clearMessages = function () {
 
 app.renderMessage = function (message) {
   var $msg = app.$chatTemplate.clone(true);
-  $msg.find('.username').text(message.username);
+  $msg.find('.username #usernameLink').text(message.username);
   $msg.find('.text').text(message.text);
   $('#chats').append($msg);
 }
@@ -94,6 +98,27 @@ app.filterMessagesByRoom = function () {
   if (filteredmsgs.length) {
     app.clearMessages();
     filteredmsgs.forEach(app.renderMessage);
+  } else {
+    app.fetch();
+  }
+
+
+}
+
+app.filterMessagesByUsername = function (username) {
+ var filteredmsgs = app.messages.filter(function(message){
+    if (message.username === username){
+        return true;
+    }
+  });
+
+
+
+  if (filteredmsgs.length) {
+    app.clearMessages();
+    filteredmsgs.forEach(app.renderMessage);
+  } else {
+    app.fetch();
   }
 
 
@@ -105,6 +130,7 @@ app.filterMessagesByRoom = function () {
   // ======================= click handlers ===================================
 $(document).ready(function(){
   app.init();
+  app.updateRoomSelectionList();
   app.fetch();
 
   $('#refreshMessages').on('click', function(event) {
@@ -130,15 +156,19 @@ $(document).ready(function(){
   });
 
   $('#roomNameSelections li').on('click', function(){
-    app.currentRoomname = $(this).text().toLowerCase();
+    app.currentRoomname = $(this).text().toLowerCase() === 'All' ? app.roomNameLists[0].toLowerCase() : $(this).text().toLowerCase();
     $('#roomNameIndicator').html($(this).text() + ' <span class="caret"></span>');
     if (app.currentRoomname === 'All') {
       app.fetch();
     } else {
-
       app.filterMessagesByRoom();
     }
 
+  });
+
+  $('#usernameLink').on('click', function(event){
+
+    app.filterMessagesByUsername($(this).text());
   });
 
 
