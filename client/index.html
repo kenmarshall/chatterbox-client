@@ -3,10 +3,14 @@
   <head>
     <meta charset="utf-8">
     <title>chatterbox</title>
-    <link rel="stylesheet" href="styles/styles.css">
+     <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
+     <link rel="stylesheet" href="bower_components/display/barrio.css">
+      <link rel="stylesheet" href="styles/styles.css">
 
     <!-- dependencies -->
     <script src="bower_components/jquery/dist/jquery.js"></script>
+    <script src="bower_components/underscore/underscore.js"></script>
+    <script src="bower_components/bootstrap/dist/js/bootstrap.min.js"></script>
     <script>
       // YOU DO NOT NEED TO EDIT THIS CODE
       if (!/(&|\?)username=/.test(window.location.search)) {
@@ -23,10 +27,51 @@
     <script src="scripts/app.js"></script>
   </head>
   <body>
+  <div class="container">
+
     <div id="main">
-      <h1>chatterbox</h1>
-      <!-- Your HTML goes here! -->
+      <h1 id="pageTitle"><span class="glyphicon glyphicon-comment" aria-hidden="true"></span> ChatterBox</h1>
+    </div> <!--main-->
+
+    <div class="controls">
+      <div class="row">
+        <div class="col-xs-6">
+          <button id="refreshMessages" class="btn btn-default">Refresh</button>
+        </div>
+        <div class="col-xs-6">
+            <div class="dropdown">
+              <button id="roomNameIndicator" class="btn btn-default dropdown-toggle" type="button" id="dropdownMenu1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="true">
+                Room Name
+                <span class="caret"></span>
+              </button>
+              <ul id="roomNameSelections" class="dropdown-menu" aria-labelledby="dropdownMenu1">
+                  <li><a>Lobby</a></li>
+                  <li><a>4Chan</a></li>
+              </ul>
+            </div>
+        </div>
+      </div>
+      <div class="row">
+        <form id="sendMessage">
+          <div class="input-group">
+            <input id="messageText" type="text" class="form-control " placeholder="Enter your message here...">
+            <span class="input-group-btn">
+              <button class="btn btn-default">Send</button>
+            </span>
+          </div>
+        </form>
+      </div>
     </div>
-    <div id="chats"></div>
+
+    <div id="chats"></div><!-- chats -->
+  </div>
+
+    <div class='hidden'>
+        <div id="chatTemplate" class='chat'>
+          <div class='username'>ken</div>
+          <div class='text'>hi</div>
+        </div>
+    </div>
+
   </body>
 </html>
